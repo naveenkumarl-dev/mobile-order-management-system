@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --navy: #12315c;
+      --blue: #2563eb;
+      --light-blue: #eff6ff;
+      --green: #15803d;
+      --red: #b91c1c;
+      --border: #dbe3ee;
+      --text: #172033;
+      --muted: #64748b;
+      --background: #f3f6fb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 720px;
+      margin: auto;
+      padding: 18px 14px 40px;
+    }
+
+    .header {
+      background: var(--navy);
+      color: white;
+      padding: 22px;
+      border-radius: 18px 18px 0 0;
+    }
+
+    .header h1 {
+      margin: 0 0 6px;
+      font-size: 24px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #dbeafe;
+      line-height: 1.5;
+    }
+
+    .form-card {
+      background: white;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 0 0 18px 18px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .section-title {
+      margin: 6px 0 16px;
+      font-size: 17px;
+      color: var(--navy);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      background: white;
+      color: var(--text);
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 22px 0;
+    }
+
+    .summary-card {
+      background: var(--light-blue);
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .summary-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .summary-value {
+      color: var(--navy);
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    button {
+      width: 100%;
+      min-height: 52px;
+      border: 0;
+      border-radius: 11px;
+      background: var(--blue);
+      color: white;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
+
+    .message {
+      display: none;
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      line-height: 1.5;
+    }
+
+    .message.success {
+      display: block;
+      background: #ecfdf3;
+      border: 1px solid #86efac;
+      color: var(--green);
+    }
+
+    .message.error {
+      display: block;
+      background: #fef2f2;
+      border: 1px solid #fca5a5;
+      color: var(--red);
+    }
+
+    .required {
+      color: var(--red);
+    }
+
+     @media (max-width: 900px) {
+      .page {
+        padding: 0;
+      }
+
+      .header,
+      .form-card {
+        border-radius: 0;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full-width {
+        grid-column: auto;
+      }
+
+      .form-card {
+        padding: 18px 15px 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="header">
+      <h1>Mobile Order Entry</h1>
+      <p>Add customer orders and payment details from your phone.</p>
+    </header>
+
+    <form id="orderForm" class="form-card">
+      <h2 class="section-title">Order information</h2>
+
+      <div class="grid">
+        <div>
+          <label for="orderDate">
+            Order Date <span class="required">*</span>
+          </label>
+          <input type="date" id="orderDate" name="orderDate" required>
+        </div>
+
+        <div>
+          <label for="customerName">
+            Customer Name <span class="required">*</span>
+          </label>
+          <input type="text" id="customerName" name="customerName" required>
+        </div>
+
+        <div>
+          <label for="mobile">
+            Mobile Number <span class="required">*</span>
+          </label>
+          <input
+            type="tel"
+            id="mobile"
+            name="mobile"
+            inputmode="numeric"
+            pattern="[6-9][0-9]{9}"
+            maxlength="10"
+            placeholder="10-digit mobile number"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="product">
+            Product <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="product"
+            name="product"
+            list="productList"
+            placeholder="Search product"
+            autocomplete="off"
+            required
+          >
+          <datalist id="productList"></datalist>
+        </div>
+
+        <div>
+          <label for="quantity">
+            Quantity <span class="required">*</span>
+          </label>
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            min="1"
+            step="1"
+            value="1"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="unitPrice">
+            Unit Price <span class="required">*</span>
+          </label>
+          <input
+            type="number"
+            id="unitPrice"
+            name="unitPrice"
+            min="1"
+            step="0.01"
+            placeholder="0"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="amountReceived">
+            Amount Received <span class="required">*</span>
+          </label>
+          <input
+            type="number"
+            id="amountReceived"
+            name="amountReceived"
+            min="0"
+            step="0.01"
+            value="0"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="paymentMethod">
+            Payment Method <span class="required">*</span>
+          </label>
+          <select id="paymentMethod" name="paymentMethod" required>
+            <option value="UPI">UPI</option>
+            <option value="Cash">Cash</option>
+            <option value="Card">Card</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Credit">Credit</option>
+            <option value="Part Payment">Part Payment</option>
+            <option value="COD">COD</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="orderStatus">
+            Order Status <span class="required">*</span>
+          </label>
+          <select id="orderStatus" name="orderStatus" required>
+            <option value="New">New</option>
+            <option value="Processing">Processing</option>
+            <option value="Packed">Packed</option>
+            <option value="Shipped">Shipped</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="Returned">Returned</option>
+            <option value="On Hold">On Hold</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="salesChannel">
+            Sales Channel <span class="required">*</span>
+          </label>
+          <select id="salesChannel" name="salesChannel" required>
+            <option value="Instagram">Instagram</option>
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="Website">Website</option>
+            <option value="Walk-in">Walk-in</option>
+            <option value="Phone">Phone</option>
+            <option value="Referral">Referral</option>
+            <option value="Marketplace">Marketplace</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="full-width">
+          <label for="notes">Notes</label>
+          <textarea
+            id="notes"
+            name="notes"
+            placeholder="Optional delivery or order notes"
+          ></textarea>
+        </div>
+      </div>
+
+      <section class="summary">
+        <div class="summary-card">
+          <div class="summary-label">Total Amount</div>
+          <div class="summary-value" id="totalPreview">₹0</div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-label">Pending Amount</div>
+          <div class="summary-value" id="pendingPreview">₹0</div>
+        </div>
+      </section>
+      <div class="field full-width">
+  <label for="pin">
+    Security PIN <span class="required">*</span>
+  </label>
+
+  <input
+    id="pin"
+    name="pin"
+    type="password"
+    inputmode="numeric"
+    maxlength="4"
+    pattern="[0-9]{4}"
+    placeholder="Enter 4-digit PIN"
+    required
+  >
+</div>
+
+      <button type="submit" id="submitButton">Add Order</button>
+      <div id="message" class="message" role="status"></div>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById("orderForm");
+    const quantityInput = document.getElementById("quantity");
+    const unitPriceInput = document.getElementById("unitPrice");
+    const receivedInput = document.getElementById("amountReceived");
+    const totalPreview = document.getElementById("totalPreview");
+    const pendingPreview = document.getElementById("pendingPreview");
+    const submitButton = document.getElementById("submitButton");
+    const message = document.getElementById("message");
+
+    function setToday() {
+      const now = new Date();
+      const localDate = new Date(
+        now.getTime() - now.getTimezoneOffset() * 60000
+      ).toISOString().slice(0, 10);
+
+      document.getElementById("orderDate").value = localDate;
+    }
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 2
+      }).format(value || 0);
+    }
+
+    function updateSummary() {
+      const quantity = Number(quantityInput.value) || 0;
+      const unitPrice = Number(unitPriceInput.value) || 0;
+      const received = Number(receivedInput.value) || 0;
+      const total = quantity * unitPrice;
+      const pending = total - received;
+
+      totalPreview.textContent = formatCurrency(total);
+      pendingPreview.textContent = formatCurrency(pending);
+    }
+
+    function loadProducts(products) {
+      const productList = document.getElementById("productList");
+      productList.innerHTML = "";
+
+      products.forEach(product => {
+        const option = document.createElement("option");
+        option.value = product;
+        productList.appendChild(option);
+      });
+    }
+
+    function showError(error) {
+      message.className = "message error";
+      message.textContent = error.message || "Unable to save the order.";
+      submitButton.disabled = false;
+      submitButton.textContent = "Add Order";
+    }
+
+    function orderSaved(result) {
+      message.className = "message success";
+      message.textContent =
+        "Order added successfully. Order ID: " + result.orderId;
+
+      form.reset();
+      setToday();
+      document.getElementById("quantity").value = 1;
+      document.getElementById("amountReceived").value = 0;
+      updateSummary();
+
+      submitButton.disabled = false;
+      submitButton.textContent = "Add Order";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+
+    quantityInput.addEventListener("input", updateSummary);
+    unitPriceInput.addEventListener("input", updateSummary);
+    receivedInput.addEventListener("input", updateSummary);
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      if (!form.reportValidity()) {
+        return;
+      }
+
+      message.className = "message";
+      message.textContent = "";
+      submitButton.disabled = true;
+      submitButton.textContent = "Saving order...";
+
+      const formData = Object.fromEntries(new FormData(form).entries());
+
+      google.script.run
+        .withSuccessHandler(orderSaved)
+        .withFailureHandler(showError)
+        .submitWebsiteOrder(formData);
+    });
+
+    setToday();
+    updateSummary();
+
+    google.script.run
+      .withSuccessHandler(loadProducts)
+      .withFailureHandler(showError)
+      .getProducts();
+  </script>
+</body>
+</html>
