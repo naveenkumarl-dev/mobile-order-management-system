@@ -22,6 +22,13 @@ This system allows users to enter orders through a simple mobile interface. The 
 * Wrong PIN access blocking
 
 ## Technology Used
+
+- Google Sheets
+- Google Apps Script
+- HTML
+- CSS
+- JavaScript
+
 ## Screenshots
 
 ### Mobile Order Entry
@@ -31,12 +38,6 @@ This system allows users to enter orders through a simple mobile interface. The 
 ### Automated Dashboard
 
 ![Order Dashboard](order-dashboard.png.png)
-* Google Sheets
-* Google Apps Script
-* HTML
-* CSS
-* JavaScript
-
 ## Workflow
 
 1. User signs in using the business PIN.
